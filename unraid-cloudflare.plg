@@ -6,11 +6,11 @@
   <FILE Name="unraid-cloudflare-2025.07.31-x86_64-1Raushan.txz" Run="upgradepkg --install-new">
     <URL>https://github.com/raushan2015/unraid-cloudflare/releases/download/v2025.07.31/unraid-cloudflare-2025.07.31-x86_64-1Raushan.txz</URL>
   </FILE>
-</PLUGIN>
-<DEPENDENCIES>
+  <DEPENDENCIES>
     <DEPENDENCY Name="unraid-api" Version="2025.07.31" />
   </DEPENDENCIES>
   <DESCRIPTION>
     This plugin integrates Unraid with Cloudflare, allowing users to manage their DNS records and other Cloudflare features directly from the Unraid interface.
   </DESCRIPTION>
   <LICENSE>GPL-3.0</LICENSE>
+</PLUGIN>
