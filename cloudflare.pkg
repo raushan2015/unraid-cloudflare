@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<PLUGIN name="unraid-cloudflare" author="Raushan" version="2025.07.31"
+        pluginURL="https://github.com/raushan/unraid-cloudflare"
+        support="https://forums.unraid.net/topic/xxxx">
+
+  <CHANGES>
+    Initial release - Cloudflare Zero Trust Tunnel for Unraid.
+  </CHANGES>
+
+  <FILE Name="/boot/config/plugins/unraid-cloudflare/unraid-cloudflare.txz" Run="/bin/bash">
+    <URL>https://github.com/raushan/unraid-cloudflare/releases/download/v2025.07.31/unraid-cloudflare-2025.07.31-x86_64-1Raushan.txz</URL>
+  </FILE>
+
+  <SCRIPT>
+    installpkg /boot/config/plugins/unraid-cloudflare/unraid-cloudflare.txz
+    /usr/local/emhttp/plugins/unraid-cloudflare/scripts/install.sh
+  </SCRIPT>
+
+  <SCRIPT Method="remove">
+    /usr/local/emhttp/plugins/unraid-cloudflare/scripts/remove.sh
+    removepkg unraid-cloudflare
+  </SCRIPT>
+</PLUGIN>

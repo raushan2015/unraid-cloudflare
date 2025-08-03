@@ -1,0 +1,47 @@
+#!/bin/bash
+# rc.cloudflare - manage Cloudflare Tunnel
+
+CLOUDFLARED_BIN="/usr/local/bin/cloudflared"
+TOKEN_FILE="/boot/config/plugins/unraid-cloudflare/token.txt"
+CONFIG_FILE="/boot/config/plugins/unraid-cloudflare/settings.conf"
+LOG_FILE="/var/log/cloudflare.log"
+
+# Read settings
+[[ -f "$CONFIG_FILE" ]] && source "$CONFIG_FILE"
+
+case "$1" in
+  start)
+    if [[ -f "$TOKEN_FILE" ]]; then
+      nohup $CLOUDFLARED_BIN tunnel --no-autoupdate run --token $(cat $TOKEN_FILE) >> $LOG_FILE 2>&1 &
+      echo $! > /var/run/cloudflare.pid
+      echo "Cloudflare tunnel started"
+    else
+      echo "No token file found"
+    fi
+    ;;
+  stop)
+    if [[ -f /var/run/cloudflare.pid ]]; then
+      kill $(cat /var/run/cloudflare.pid)
+      rm -f /var/run/cloudflare.pid
+      echo "Stopped"
+    else
+      echo "Not running"
+    fi
+    ;;
+  restart)
+    $0 stop
+    sleep 2
+    $0 start
+    ;;
+  status)
+    [[ -f /var/run/cloudflare.pid ]] && echo "Running" || echo "Stopped"
+    ;;
+  boot)
+    if [[ "$AUTOSTART" == "1" ]]; then
+      $0 start
+    fi
+    ;;
+  *)
+    echo "Usage: $0 {start|stop|restart|status|boot}"
+    ;;
+esac

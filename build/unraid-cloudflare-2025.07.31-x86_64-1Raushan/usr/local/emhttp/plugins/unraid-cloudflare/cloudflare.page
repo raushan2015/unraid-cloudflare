@@ -1,0 +1,47 @@
+<?php
+$docroot = $docroot ?? $_SERVER['DOCUMENT_ROOT'] ?: '/usr/local/emhttp';
+require_once "$docroot/webGui/include/Helpers.php";
+
+$tokenFile = "/boot/config/plugins/unraid-cloudflare/token.txt";
+$configFile = "/boot/config/plugins/unraid-cloudflare/settings.conf";
+
+if (isset($_POST['token']) && $_POST['token']) {
+    file_put_contents($tokenFile, trim($_POST['token']));
+    shell_exec("/usr/local/emhttp/plugins/unraid-cloudflare/scripts/rc.cloudflare restart");
+}
+
+if (isset($_POST['autostart'])) {
+    $autostart = ($_POST['autostart'] == "1") ? "1" : "0";
+    file_put_contents($configFile, "AUTOSTART=$autostart\n");
+}
+
+$settings = [];
+if (file_exists($configFile)) {
+    $settings = parse_ini_file($configFile);
+}
+$autostartValue = $settings['AUTOSTART'] ?? "0";
+?>
+
+<div>
+  <h2>Cloudflare Zero Trust</h2>
+  <form method="POST">
+    <label>Enter Cloudflare Tunnel Token:</label><br>
+    <input type="password" name="token" value="">
+    <button type="submit">Save & Restart</button>
+  </form>
+
+  <form method="POST" style="margin-top:20px;">
+    <label>
+      <input type="hidden" name="autostart" value="0">
+      <input type="checkbox" name="autostart" value="1" <?=($autostartValue=="1"?"checked":"")?>>
+      Auto-start tunnel on boot
+    </label>
+    <button type="submit">Save</button>
+  </form>
+
+  <h3>Status</h3>
+  <pre><?=shell_exec("/usr/local/emhttp/plugins/unraid-cloudflare/scripts/rc.cloudflare status");?></pre>
+
+  <h3>Logs</h3>
+  <pre><?=shell_exec("tail -n 20 /var/log/cloudflare.log");?></pre>
+</div>
