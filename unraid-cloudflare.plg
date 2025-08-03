@@ -4,6 +4,6 @@
     Initial release.
   </CHANGES>
   <FILE Name="unraid-cloudflare-2025.07.31-x86_64-1Raushan.txz" Run="upgradepkg --install-new">
-    <URL>https://github.com/raushan2015/unraid-cloudflare/blob/main/unraid-cloudflare-2025.07.31-x86_64-1Raushan.txz</URL>
+    <URL>https://raw.githubusercontent.com/raushan2015/unraid-cloudflare/main/unraid-cloudflare-2025.07.31-x86_64-1Raushan.txz</URL>
   </FILE>
 </PLUGIN>
